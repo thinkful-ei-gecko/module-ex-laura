@@ -7,11 +7,16 @@ body {
 }
 
 button, input[type="text"] {
-  padding: 5px;
+  padding: 3px 6px;
+  margin: 12px 2px 2px 2px;
+  background-color: rgb(220, 240, 247);
+  display: inline;
+  border-radius: 4px;
 }
 
 button:hover {
   cursor: pointer;
+  background-color: lightblue
 }
 
 .hidden {
@@ -33,19 +38,28 @@ button:hover {
 }
 
 .shopping-list > li {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   border: 1px solid grey;
-  padding: 20px;
+  padding: 15px 20px;
 }
 
 .shopping-item {
   display: block;
-  color: grey;
+  color: rgb(99, 99, 99);
   font-style: italic;
-  font-size: 20px;
-  margin-bottom: 15px;
+  font-size: 1.4rem;
+  line-height: 1.6rem;
 }
 
 .shopping-item__checked {
   text-decoration: line-through;
+}
+
+label {
+  font-size: 1.2rem;
+  line-height: 2rem;
+}
+
+.update-button {
+  display: inline;
 }

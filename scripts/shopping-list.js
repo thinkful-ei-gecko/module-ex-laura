@@ -7,13 +7,16 @@ const shoppingList = (function(){
   function generateItemElement(item) {
     let itemTitle = `<span class="shopping-item shopping-item__checked">${item.name}</span>`;
     if (!item.checked) {
+      itemTitle = `<span class='shopping-item'>${item.name}</span>`;
+    }
+    if (item.renaming) {
       itemTitle = `
-        <form class="js-edit-item">
-          <input class="shopping-item" type="text" value="${item.name}" />
+        <form class="js-item-edit">
+          <input class="shopping-item shopping-item-edit" type="text" value="${item.name}" />
+          <button type='submit' class='update-button'><span class="button-label">Update name</span></button>
         </form>
       `;
     }
-  
     return `
       <li class="js-item-element" data-item-id="${item.id}">
         ${itemTitle}
@@ -23,6 +26,9 @@ const shoppingList = (function(){
           </button>
           <button class="shopping-item-delete js-item-delete">
             <span class="button-label">delete</span>
+          </button>
+          <button class="shopping-item-rename js-item-rename">
+            <span class="button-label">rename</span>
           </button>
         </div>
       </li>`;
@@ -58,13 +64,16 @@ const shoppingList = (function(){
   
   function addItemToShoppingList(itemName) {
     store.items.push({ id: cuid(), name: itemName, checked: false });
+    console.log(store);
   }
   
   function handleNewItemSubmit() {
     $('#js-shopping-list-form').submit(function (event) {
       event.preventDefault();
       const newItemName = $('.js-shopping-list-entry').val();
+      
       $('.js-shopping-list-entry').val('');
+
       addItemToShoppingList(newItemName);
       render();
     });
@@ -74,7 +83,6 @@ const shoppingList = (function(){
     const foundItem = store.items.find(item => item.id === id);
     foundItem.checked = !foundItem.checked;
   }
-  
   
   function getItemIdFromElement(item) {
     return $(item)
@@ -95,9 +103,10 @@ const shoppingList = (function(){
     store.items.splice(index, 1);
   }
   
-  function editListItemName(id, itemName) {
+  function editListItemName(id, itemNewName) {
     const item = store.items.find(item => item.id === id);
-    item.name = itemName;
+    item.name = itemNewName;
+    console.log(store);
   }
   
   function toggleCheckedItemsFilter() {
@@ -108,7 +117,21 @@ const shoppingList = (function(){
     store.searchTerm = val;
   }
   
-  
+  function toggleRenamingItem(id) {
+    const foundItem = store.items.find(item => item.id === id);
+    console.log(foundItem);
+    foundItem.renaming = !foundItem.renaming;
+
+  }
+
+  function handleRenameItemClicked() {
+    $('.js-shopping-list').on('click', '.js-item-rename', event => {
+      const id = getItemIdFromElement(event.currentTarget);
+      toggleRenamingItem(id);
+      render();        
+    });
+  }
+
   function handleDeleteItemClicked() {
     // like in `handleItemCheckClicked`, we use event delegation
     $('.js-shopping-list').on('click', '.js-item-delete', event => {
@@ -122,15 +145,16 @@ const shoppingList = (function(){
   }
   
   function handleEditShoppingItemSubmit() {
-    $('.js-shopping-list').on('submit', '.js-edit-item', event => {
+    $('.js-shopping-list').on('submit', '.js-item-edit', event => {
       event.preventDefault();
       const id = getItemIdFromElement(event.currentTarget);
-      const itemName = $(event.currentTarget).find('.shopping-item').val();
-      editListItemName(id, itemName);
+      const itemNewName = $(event.currentTarget).find('.shopping-item-edit').val();
+      editListItemName(id, itemNewName);
+      toggleRenamingItem(id);
       render();
     });
   }
-  
+ 
   function handleToggleFilterClick() {
     $('.js-filter-checked').click(() => {
       toggleCheckedItemsFilter();
@@ -153,6 +177,7 @@ const shoppingList = (function(){
     handleEditShoppingItemSubmit();
     handleToggleFilterClick();
     handleShoppingListSearch();
+    handleRenameItemClicked();
   }
 
   // This object contains the only exposed methods from this module:
