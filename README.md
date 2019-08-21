@@ -1,16 +1,20 @@
 ## Shopping List -- more complex UI store assignment
 
-###This project uses:
+--------------------------------------------------
+
+### This project uses:
  - html
  - css
  - javascript
 
 --------------------------------------------------
 
-### View Screen-shot:
+### Screenshot:
 
 ![shopping list screenshot](ShoppingListView.jpg)
 
+--------------------------------------------------
 
 ### Link to live app:
+https://thinkful-ei-gecko.github.io/module-ex-laura/
 
