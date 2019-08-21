@@ -19,6 +19,14 @@ button:hover {
   background-color: lightblue
 }
 
+.bottom-row {
+  display: inline-block;
+}
+
+.rtside {
+  margin-left: 18%;
+}
+
 .hidden {
   display: none;
 }
